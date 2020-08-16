@@ -1,0 +1,26 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    New Page
+{% endblock %}
+
+{% block body %}
+    <h1>Create new page</h1>
+
+    {% if error == 1 %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+    {% endif %}
+
+    <form action="new" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }}  {{ field }}
+            </div>
+        {% endfor %}
+        <input class="btn btn-primary" type="submit" value="Save Page">
+    </form>
+{% endblock%}
