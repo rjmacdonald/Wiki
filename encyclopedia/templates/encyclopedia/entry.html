@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    {{ content | safe }}
-    <a href="{{ 'edit/'|add:title }}">Edit Page</a>
+    {% if content %}
+        {{ content | safe }}
+        <a href="{{ 'edit/'|add:title }}">Edit Page</a>
+    {% endif %}
 {% endblock %}

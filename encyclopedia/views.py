@@ -51,7 +51,11 @@ def edit(request, entry):
 def entry(request, entry):
     content = util.get_entry(entry)
     if not content:
-        return HttpResponse("Error: Entry not found")
+        return render(request, "encyclopedia/entry.html", {
+            "title": entry,
+            "error": 1,
+            "error_message": "Error: Invalid entry"
+        })
     return render(request, "encyclopedia/entry.html", {
         "title": entry,
         "content": util.markdown(content)
