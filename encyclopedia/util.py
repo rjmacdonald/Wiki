@@ -93,17 +93,19 @@ def markdown(content):
         links = re.findall(link, line)
         hrefs = re.findall(href, line)
 
-        print(links, hrefs)
-
         # Loops through each link, cleaning brackets
         for link in links:
             link = re.sub('\[', '\\[', link)
             link = re.sub('\]', '\\]', link)
 
             # Loops through each href, cleaning brackets
+            # Count and if ensures only the enclosing brackets are affected
             for href in hrefs:
+                count = len(re.findall('\)', href))
+                if count > 1:
+                    href = href.replace(')', '', 1)
                 href = re.sub('\(', '\\(', href)
-                href = re.sub('\)', '\\)', href)
+                href = re.sub('\)', '\\)', href, 1)
                 
                 # Searches line for currently selected href/link pair
                 link_search = re.search(link, line)
@@ -112,10 +114,13 @@ def markdown(content):
                 # If both present and concurrent replaces with link tag
                 if link_search != None and href_search != None:
                     if link_search.end() == href_search.start():
+                        print("pre-cleaning:", link_search.group(), href_search.group())
                         link_clean = re.sub('\[|\]', '', link_search.group())
                         href_clean = re.sub('\(|\)', '', href_search.group())
+                        print("post-cleaning:", link_clean, href_clean)
                         replace = link + href
                         insert = '<a href="' + href_clean + '">' + link_clean + "</a>"
+                        print("Replace = ", replace, "insert = ", insert)
                         line = re.sub(replace, insert, line)
 
         # Commits cleansed line to markdown list
