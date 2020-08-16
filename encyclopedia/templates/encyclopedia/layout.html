@@ -29,6 +29,11 @@
                 {% endblock %}
             </div>
             <div class="main col-lg-10 col-md-9">
+                {% if error == 1 %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error_message }}
+                    </div>
+                {% endif %}
                 {% block body %}
                 {% endblock %}
             </div>
